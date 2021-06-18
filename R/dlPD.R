@@ -5,7 +5,7 @@
 #' dispersal parameter the psi is, the higher the amount of distinct observed
 #' species will be. In terms of the paintbox process, a high psi increases the
 #' size of the continuous part p_0 of the process, while a low psi will increase
-#' the size of the discrete parts p_>0.
+#' the size of the discrete parts p_1, ... p_k.
 #'
 #' @usage dlPD(abund, psi)
 #' @param abund An abundance vector.

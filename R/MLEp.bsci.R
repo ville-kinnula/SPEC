@@ -8,10 +8,10 @@
 
 MLEp.bsci<-function(x) {
   n_bootstrap<-1000
-  n<-length(x)
+  n<-floor(0.8*length(x))
   bootsrap_psis<-c()
   for (i in 1:n_bootstrap) {
-    bootsrap_psis<-append(bootsrap_psis, MLEp(table(table(sample(x,n,replace=TRUE))))$psi)
+    bootsrap_psis<-append(bootsrap_psis, MLEp(table(table(sample(x,n))))$psi)
   }
-  return(quantile(bootsrap_psis,c(0.025,0.975)))
+  return(c(MLEp(table(table(x)))$psi,quantile(bootsrap_psis,c(0.025,0.975))))
 }
