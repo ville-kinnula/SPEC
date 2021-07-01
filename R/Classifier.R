@@ -1,18 +1,20 @@
-#' Fit the supervised classifier
+#' Fit the supervised classifier under partition exchangeability
 #'
-#' Trains the model according to training data x and labels y.
-#' The output is a classwise list including the frequencies of the data, and the MLE of
-#' psi.
+#' Trains the model according to training data x, where x is assumed to follow
+#' the Poisson-Dirichlet distribution, and discrete labels y.
 #' @param x data vector, or matrix with rows as data points and columns as features.
-#' @param y training label vector.
-#' @return If x is multidimensional, each list described below is returned for each dimension.
+#' @param y training data label vector of length equal to the amount of rows in `x`.
+#' @return Returns an object used as training data objects for the classification
+#' algorithms `tMarLab` and `tSimLab`.
+#' @return If `x` is multidimensional, each list described below is returned for each dimension.
 #' @return Returns a list of classwise lists, each with components:
-#' @return frequencies: the frequencies of values in the class.
-#' @return psi: the estimate of psi for the class.
-#'
+#' @return `frequencies`: the frequencies of values in the class.
+#' @return `psi`: the Maximum Likelihood estimate for \eqn{\psi} for the class.
 #' @keywords Fit training data
 #' @export
 #' @examples
+#' ## Create training data x and its class labels y from Poisson-Dirichlet distributions
+#' ## with different psis:
 #' set.seed(111)
 #' x1<-rPD(5000,10)
 #' x2<-rPD(5000,100)
@@ -22,7 +24,7 @@
 #' y<-c(y1,y2)
 #' fit<-SPEC.fit(x,y)
 #'
-#' ##With multidimensional x:
+#' ## With multidimensional x:
 #' set.seed(111)
 #' x1<-cbind(rPD(5000,10),rPD(5000,50))
 #' x2<-cbind(rPD(5000,100),rPD(5000,500))
@@ -59,34 +61,41 @@ SPEC.fit <- function(x, y) {
 
 #' Marginally predicted labels of the test data given training data classification.
 #'
-#' tMarLab classifies the test data x based on the training data object.
+#' `tMarLab` classifies the test data `x` based on the training data object.
 #' The test data is considered i.i.d. and to have arrived sequentially. Thus, each
 #' data point is classified one by one.
-#' @param training A training data object from the function SPEC.fit.
+#' @param training A training data object from the function `SPEC.fit`.
 #' @param x Test data vector or matrix with rows as data points and columns as features.
 #' @return A vector of predicted labels for test data x.
 #' @keywords Marginal classifier
 #' @export
-#' @references #' The classification algorithm is adapted from
-#' [Corander, J., Cui, Y., Koski, T., and Siren, J.: Have I seen you before? Principles of Bayesian predictive classification revisited. Springer, Stat. Comput. 23, (2011), 59–73.]
-#'  (https://doi.org/10.1007/s11222-011-9291-7)
+#' @references Amiryousefi A. Asymptotic supervised predictive classifiers under
+#' partition exchangeability. . 2021. <https://arxiv.org/abs/2101.10950>.
+#' @references Corander, J., Cui, Y., Koski, T., and Siren, J.: Have I seen you before?
+#' Principles of Bayesian predictive classification revisited. Springer, Stat.
+#' Comput. 23, (2011), 59–73. (<https://doi.org/10.1007/s11222-011-9291-7>)
 #' @examples
+#' ## Create random samples x from Poisson-Dirichlet distributions with different
+#' ## psis, treating each sample as coming from a class of its own:
 #' set.seed(111)
 #' x1<-rPD(10500,10)
 #' x2<-rPD(10500,1000)
-#' test.ind1<-sample.int(10500,500)
-#' test.ind2<-sample.int(10500,500)
+#' test.ind1<-sample.int(10500,500) # Sample test datasets from the
+#' test.ind2<-sample.int(10500,500) # original samples
 #' x<-c(x1[-test.ind1],x2[-test.ind2])
+#' ## create training data labels:
 #' y1<-rep("1", 10000)
 #' y2<-rep("2", 10000)
 #' y<-c(y1,y2)
 #'
+#' ## Test data t, with first half belonging to class "1", second have in "2":
 #' t1<-x1[test.ind1]
 #' t2<-x2[test.ind2]
 #' t<-c(t1,t2)
 #'
 #' fit<-SPEC.fit(x,y)
 #'
+#' ## Run the classifier, which returns
 #' tM<-tMarLab(fit, t)
 #'
 #' ##With multidimensional x:
@@ -143,40 +152,47 @@ tMarLab <- function(training, x) {
 
 #' Simultaneously predicted labels of the test data given the training data classification.
 #'
-#' The simultaneous case:
-#' The test data are first labeled with the marginal classifier. The simultaneous
-#' classifier then iterates over all test data, assigning each a label by finding
-#' the maximum predictive probability given the current classification structure of
-#' the test data as a whole. This is repeated until the classification structure
-#' doesn't change after iterating over all data.
-#' The classification algorithm is adapted from
-#' [Corander, J., Cui, Y., Koski, T., and Siren, J.: Have I seen you before? Principles of Bayesian predictive classification revisited. Springer, Stat. Comput. 23, (2011), 59–73.] (https://doi.org/10.1007/s11222-011-9291-7)
-#' @param training A training data object from the function SPEC.fit.
+#' `tSimLab` classifies the test data `x` based on the training data object.
+#' All of the test data is used simultaneously to make the classification.
+#' @param training A training data object from the function `SPEC.fit`.
 #' @param x Test data vector or matrix with rows as data points and columns as features.
 #' @return A vector of predicted labels for test data x.
 #' @keywords Simultaneous classifier
 #' @usage tSimLab(training, x)
 #' @export
-#' @references The classification algorithm is adapted from
-#' [Corander, J., Cui, Y., Koski, T., and Siren, J.: Have I seen you before? Principles of Bayesian predictive classification revisited. Springer, Stat. Comput. 23, (2011), 59–73.]
-#'  (https://doi.org/10.1007/s11222-011-9291-7)
+#' @details The simultaneous case:
+#' The test data are first labeled with the marginal classifier. The simultaneous
+#' classifier then iterates over all test data, assigning each a label by finding
+#' the maximum predictive probability given the current classification structure of
+#' the test data as a whole. This is repeated until the classification structure
+#' doesn't change after iterating over all data.
+#' @references Amiryousefi A. Asymptotic supervised predictive classifiers under
+#' partition exchangeability. . 2021. <https://arxiv.org/abs/2101.10950>.
+#' @references Corander, J., Cui, Y., Koski, T., and Siren, J.: Have I seen you before?
+#' Principles of Bayesian predictive classification revisited. Springer, Stat.
+#' Comput. 23, (2011), 59–73.(<https://doi.org/10.1007/s11222-011-9291-7>)
 #' @examples
+#' ## Create random samples x from Poisson-Dirichlet distributions with different
+#' ## psis, treating each sample as coming from a class of its own:
 #' set.seed(111)
-#' x1<-rPD(11500,10)
-#' x2<-rPD(11500,1000)
-#' test.ind1<-sample.int(10500,500)
-#' test.ind2<-sample.int(10500,500)
+#' x1<-rPD(10500,10)
+#' x2<-rPD(10500,1000)
+#' test.ind1<-sample.int(10500,500) # Sample test datasets from the
+#' test.ind2<-sample.int(10500,500) # original samples
 #' x<-c(x1[-test.ind1],x2[-test.ind2])
+#' ## create training data labels:
 #' y1<-rep("1", 10000)
 #' y2<-rep("2", 10000)
 #' y<-c(y1,y2)
 #'
+#' ## Test data t, with first half belonging to class "1", second have in "2":
 #' t1<-x1[test.ind1]
 #' t2<-x2[test.ind2]
 #' t<-c(t1,t2)
 #'
 #' fit<-SPEC.fit(x,y)
 #'
+#' ## Run the classifier, which returns
 #' tS<-tSimLab(fit, t)
 #'
 #' ##With multidimensional x:
@@ -195,7 +211,6 @@ tMarLab <- function(training, x) {
 #' t<-rbind(t1,t2)
 #'
 #' tS<-tSimLab(fit, t)
-
 
 
 tSimLab <- function(training, x) {

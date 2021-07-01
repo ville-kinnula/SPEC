@@ -7,7 +7,7 @@
 tMarLab(training, x)
 }
 \arguments{
-\item{training}{A training data object from the function SPEC.fit.}
+\item{training}{A training data object from the function \code{SPEC.fit}.}
 
 \item{x}{Test data vector or matrix with rows as data points and columns as features.}
 }
@@ -15,27 +15,32 @@ tMarLab(training, x)
 A vector of predicted labels for test data x.
 }
 \description{
-tMarLab classifies the test data x based on the training data object.
+\code{tMarLab} classifies the test data \code{x} based on the training data object.
 The test data is considered i.i.d. and to have arrived sequentially. Thus, each
 data point is classified one by one.
 }
 \examples{
+## Create random samples x from Poisson-Dirichlet distributions with different
+## psis, treating each sample as coming from a class of its own:
 set.seed(111)
 x1<-rPD(10500,10)
 x2<-rPD(10500,1000)
-test.ind1<-sample.int(10500,500)
-test.ind2<-sample.int(10500,500)
+test.ind1<-sample.int(10500,500) # Sample test datasets from the
+test.ind2<-sample.int(10500,500) # original samples
 x<-c(x1[-test.ind1],x2[-test.ind2])
+## create training data labels:
 y1<-rep("1", 10000)
 y2<-rep("2", 10000)
 y<-c(y1,y2)
 
+## Test data t, with first half belonging to class "1", second have in "2":
 t1<-x1[test.ind1]
 t2<-x2[test.ind2]
 t<-c(t1,t2)
 
 fit<-SPEC.fit(x,y)
 
+## Run the classifier, which returns
 tM<-tMarLab(fit, t)
 
 ##With multidimensional x:
@@ -56,9 +61,12 @@ t<-rbind(t1,t2)
 tM<-tMarLab(fit, t)
 }
 \references{
-#' The classification algorithm is adapted from
-\link{Corander, J., Cui, Y., Koski, T., and Siren, J.: Have I seen you before? Principles of Bayesian predictive classification revisited. Springer, Stat. Comput. 23, (2011), 59–73.}
-(https://doi.org/10.1007/s11222-011-9291-7)
+Amiryousefi A. Asymptotic supervised predictive classifiers under
+partition exchangeability. . 2021. \url{https://arxiv.org/abs/2101.10950}.
+
+Corander, J., Cui, Y., Koski, T., and Siren, J.: Have I seen you before?
+Principles of Bayesian predictive classification revisited. Springer, Stat.
+Comput. 23, (2011), 59–73. (\url{https://doi.org/10.1007/s11222-011-9291-7})
 }
 \keyword{Marginal}
 \keyword{classifier}

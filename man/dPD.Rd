@@ -2,35 +2,61 @@
 % Please edit documentation in R/PD_distribution.R
 \name{dPD}
 \alias{dPD}
-\title{Poisson Dirichlet distribution}
+\alias{rPD}
+\title{The Poisson-Dirichlet distribution}
 \usage{
 dPD(abund, psi)
+
+rPD(n, psi)
+
+rPD(n, psi)
 }
 \arguments{
 \item{abund}{An abundance vector.}
 
-\item{psi}{Dispersal parameter. Accepted values are positive numbers, "a" for absolute value psi=1 by default, or "r" for relative value psi equals sample size.}
+\item{psi}{dispersal parameter.}
+
+\item{n}{number of observations.}
 }
 \value{
-dPD returns the probability of the abundance vector of the data vector x, given dispersal parameter psi.
+\code{dPD} returns the probability of the abundance vector of the data vector \code{x}, given dispersal parameter \eqn{\psi}.
+
+\code{rPD} returns a vector with a sample of size \eqn{n} from the Hoppe urn model with parameter \eqn{\psi}, along with its table of frequencies.
+given parameter \eqn{\psi}.
 }
 \description{
-Probability of a data vector x given by Ewens' sampling formula. The higher the
-dispersal parameter the psi is, the higher the amount of distinct observed
-species will be. In terms of the paintbox process, a high psi increases the
-size of the continuous part p_0 of the process, while a low psi will increase
-the size of the discrete parts p_>0.
+Distribution function and random generation of for the Poisson-Dirichlet distribution.
+}
+\details{
+\code{dPD} calculates the probability of a data vector \code{x} given by the Poisson-Dirichlet distribution,
+also known as the Ewens sampling formula. The higher the
+dispersal parameter \eqn{\psi}, the higher the amount of distinct observed
+species. In terms of the paintbox process, a high \eqn{\psi} increases the
+size of the continuous part \eqn{p_0} of the process, while a low \eqn{\psi} will increase
+the size of the discrete parts \eqn{p_>0}.
+\code{rPD} samples random values with a given \eqn{\psi} from the Poisson-Dirichlet distribution by simulating the Hoppe urn model.
 }
 \examples{
+## Get a random sample from the Poisson Dirichlet distribution, and
+## find the probability of such a sample with psi=5:
 set.seed(111)
-s <- rPD(100,5)
+s <- rPD(n=100,psi=5)
 a=table(table(s))
-dPD(a, 5)
+dPD(a, psi=5)
+
+## Get random sample from the PD distribution with different psi,
+## and estimate the psi of the samples:
+s1<-rPD(1000, 10)
+s2<- rPD(1000, 50)
+print(c(MLEp(table(table(s1)))$psi, MLEp(table(table(s2)))$psi))
 
 }
 \references{
 W.J. Ewens, The sampling theory of selectively neutral alleles, Theoretical Population Biology, Volume 3, Issue 1,
-1972, Pages 87-112, ISSN 0040-5809, https://doi.org/10.1016/0040-5809(72)90035-4.
+1972, Pages 87-112, ISSN 0040-5809, \url{https://doi.org/10.1016/0040-5809(72)90035-4}.
+
+Hoppe, F.M. The sampling theory of neutral alleles and an urn model in population genetics.
+J. Math. Biology 25, 123–159 (1987). \url{https://doi.org/10.1007/BF00276386}.
 }
 \keyword{Poisson-Dirichlet}
 \keyword{distribution}

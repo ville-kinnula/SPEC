@@ -7,7 +7,7 @@
 tSimLab(training, x)
 }
 \arguments{
-\item{training}{A training data object from the function SPEC.fit.}
+\item{training}{A training data object from the function \code{SPEC.fit}.}
 
 \item{x}{Test data vector or matrix with rows as data points and columns as features.}
 }
@@ -15,32 +15,39 @@ tSimLab(training, x)
 A vector of predicted labels for test data x.
 }
 \description{
+\code{tSimLab} classifies the test data \code{x} based on the training data object.
+All of the test data is used simultaneously to make the classification.
+}
+\details{
 The simultaneous case:
 The test data are first labeled with the marginal classifier. The simultaneous
 classifier then iterates over all test data, assigning each a label by finding
 the maximum predictive probability given the current classification structure of
 the test data as a whole. This is repeated until the classification structure
 doesn't change after iterating over all data.
-The classification algorithm is adapted from
-\link{Corander, J., Cui, Y., Koski, T., and Siren, J.: Have I seen you before? Principles of Bayesian predictive classification revisited. Springer, Stat. Comput. 23, (2011), 59–73.} (https://doi.org/10.1007/s11222-011-9291-7)
 }
 \examples{
+## Create random samples x from Poisson-Dirichlet distributions with different
+## psis, treating each sample as coming from a class of its own:
 set.seed(111)
-x1<-rPD(11500,10)
-x2<-rPD(11500,1000)
-test.ind1<-sample.int(10500,500)
-test.ind2<-sample.int(10500,500)
+x1<-rPD(10500,10)
+x2<-rPD(10500,1000)
+test.ind1<-sample.int(10500,500) # Sample test datasets from the
+test.ind2<-sample.int(10500,500) # original samples
 x<-c(x1[-test.ind1],x2[-test.ind2])
+## create training data labels:
 y1<-rep("1", 10000)
 y2<-rep("2", 10000)
 y<-c(y1,y2)
 
+## Test data t, with first half belonging to class "1", second have in "2":
 t1<-x1[test.ind1]
 t2<-x2[test.ind2]
 t<-c(t1,t2)
 
 fit<-SPEC.fit(x,y)
 
+## Run the classifier, which returns
 tS<-tSimLab(fit, t)
 
 ##With multidimensional x:
@@ -61,9 +68,12 @@ t<-rbind(t1,t2)
 tS<-tSimLab(fit, t)
 }
 \references{
-The classification algorithm is adapted from
-\link{Corander, J., Cui, Y., Koski, T., and Siren, J.: Have I seen you before? Principles of Bayesian predictive classification revisited. Springer, Stat. Comput. 23, (2011), 59–73.}
-(https://doi.org/10.1007/s11222-011-9291-7)
+Amiryousefi A. Asymptotic supervised predictive classifiers under
+partition exchangeability. . 2021. \url{https://arxiv.org/abs/2101.10950}.
+
+Corander, J., Cui, Y., Koski, T., and Siren, J.: Have I seen you before?
+Principles of Bayesian predictive classification revisited. Springer, Stat.
+Comput. 23, (2011), 59–73.(\url{https://doi.org/10.1007/s11222-011-9291-7})
 }
 \keyword{Simultaneous}
 \keyword{classifier}

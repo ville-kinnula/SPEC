@@ -9,7 +9,8 @@ LMTp(abund, psi = "a")
 \arguments{
 \item{abund}{An abundance vector.}
 
-\item{psi}{Target psi to be tested. psi = "a" for absolute value 1, "r" for relative value n (sample size), or any positive number.}
+\item{psi}{Target \eqn{\psi} to be tested. \code{psi} = "a" for absolute value 1,
+"r" for relative value \eqn{n} (sample size), or any positive number.}
 }
 \value{
 A p-value.
@@ -20,20 +21,29 @@ exchangeability. Returns a p-value for the hypothesis that the input data
 vector stems from a population with the input dispersal parameter.
 }
 \details{
-U(psi_0)^2/I(psi_0),
-where U is the log-likelihood function of psi and I is its Fisher information.
-The statistic follows chi-squared distribution with 1 degree of freedom
-when the null hypothesis H_0:psi<-psi_0 is true.
+\deqn{U(\psi_0)^2 / I(\psi_0)},
+where \eqn{U} is the log-likelihood function of \eqn{\psi} and \eqn{I} is its Fisher information.
+The statistic follows \eqn{\chi^2}-distribution with 1 degree of freedom
+when the null hypothesis \eqn{H_0:\psi=\psi_0} is true.
 }
 \examples{
+## Test the psi of a sample fro mthe Poisson-Dirichlet distribution:
 set.seed(10000)
 x<-rPD(1000, 10)
+## Find the abundances of the data vector:
 abund=abundances(table(x))
+## Test for the psi that was used, as well as a high one and a low one:
 LMTp(abund, 10)
 LMTp(abund, 15)
 LMTp(abund, 5)
 LMTp(abund)       #test for psi=1
 LMTp(abund, "r")  #test for psi=n
+}
+\references{
+Radhakrishna Rao, C, (1948), Large sample tests of statistical
+hypotheses concerning several parameters with applications to problems of
+estimation. Mathematical Proceedings of the Cambridge Philosophical Society,
+44(1), 50-57. \url{https://doi.org/10.1017/S0305004100023987}
 }
 \keyword{score}
 \keyword{test}

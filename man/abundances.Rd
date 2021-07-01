@@ -2,24 +2,29 @@
 % Please edit documentation in R/utils.R
 \name{abundances}
 \alias{abundances}
-\title{Abundances - frequencies of frequencies}
+\title{Vector of frequencies of frequencies}
 \usage{
 abundances(freqs, freqs0 = NULL)
 }
 \arguments{
-\item{freqs}{A frequency table of data vector x.}
+\item{freqs}{A frequency table of data vector \code{x}.}
 
-\item{freqs0}{A second optional frequency table to be merged to the freqs parameter.}
+\item{freqs0}{A second optional frequency table to be merged to the \code{freqs} parameter.}
+}
+\value{
+This function returns a named vector that is used to calculate
+probabilities and make classifications.
 }
 \description{
 A function to calculate frequencies of frequencies or the combined
 frequencies of frequencies of two vectors.
-Freqs are calculated by table(x), where x is data. Freqs0 is optional. It is
+}
+\details{
+\code{Freqs0} is optional. It is
 used in the case of calculating abundances of test data when the frequencies of
-the training data are already known. Freqs0 is table(x0) ,where x0 is training
+the training data are already known. \code{Freqs0} is \code{table(x0)} ,where \code{x0} is training
 data. Abundances of any kind of data vector x can be calculated with
-table(table(x)). This returns a named vector that is used to calculate
-probabilities and make classifications.
+\code{table(table(x))}.
 }
 \examples{
 set.seed(111)

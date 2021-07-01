@@ -4,14 +4,25 @@
 \alias{MLEp.bsci}
 \title{Bootstrap confidence interval for the MLE of psi}
 \usage{
-MLEp.bsci(x)
+MLEp.bsci(x, level)
 }
 \arguments{
 \item{x}{A data vector.}
+
+\item{level}{Level of confidence interval as number between 0 and 1.}
 }
 \value{
-Lower and upper bounds of the confidence interval.
+The MLE of psi as well as lower and upper bounds of the bootstrap
+confidence interval.
 }
 \description{
-A bootstrapped confidence interval for the Maximum Likelihood Estimate for psi.
+A bootstrapped confidence interval for the Maximum Likelihood Estimate for
+psi based on a 100 bootstrap rounds with 80\% of data used at a time.
+}
+\examples{
+## Find a 95\% -confidence interval for the MLE of psi given a sample from the
+## Poisson-Dirichlet distribution:
+x<-rPD(n=10000, psi=100)
+MLEp.bsci(x, 0.95)
+
 }

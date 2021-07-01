@@ -2,30 +2,34 @@
 % Please edit documentation in R/Classifier.R
 \name{SPEC.fit}
 \alias{SPEC.fit}
-\title{Fit the supervised classifier}
+\title{Fit the supervised classifier under partition exchangeability}
 \usage{
 SPEC.fit(x, y)
 }
 \arguments{
 \item{x}{data vector, or matrix with rows as data points and columns as features.}
 
-\item{y}{training label vector.}
+\item{y}{training data label vector of length equal to the amount of rows in \code{x}.}
 }
 \value{
-If x is multidimensional, each list described below is returned for each dimension.
+Returns an object used as training data objects for the classification
+algorithms \code{tMarLab} and \code{tSimLab}.
+
+If \code{x} is multidimensional, each list described below is returned for each dimension.
 
 Returns a list of classwise lists, each with components:
 
-frequencies: the frequencies of values in the class.
+\code{frequencies}: the frequencies of values in the class.
 
-psi: the estimate of psi for the class.
+\code{psi}: the Maximum Likelihood estimate for \eqn{\psi} for the class.
 }
 \description{
-Trains the model according to training data x and labels y.
-The output is a classwise list including the frequencies of the data, and the MLE of
-psi.
+Trains the model according to training data x, where x is assumed to follow
+the Poisson-Dirichlet distribution, and discrete labels y.
 }
 \examples{
+## Create training data x and its class labels y from Poisson-Dirichlet distributions
+## with different psis:
 set.seed(111)
 x1<-rPD(5000,10)
 x2<-rPD(5000,100)
@@ -35,7 +39,7 @@ y2<-rep("2", 5000)
 y<-c(y1,y2)
 fit<-SPEC.fit(x,y)
 
-##With multidimensional x:
+## With multidimensional x:
 set.seed(111)
 x1<-cbind(rPD(5000,10),rPD(5000,50))
 x2<-cbind(rPD(5000,100),rPD(5000,500))
