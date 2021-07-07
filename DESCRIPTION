@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "kinnula.ville@gmail.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: This package implements a supervised predictive classifier under partition echangeability due to J.F.C. Kingman (1978). Given training data and labels, it learns the maximum likelihood estimate for the single parameter of the so called Ewens sampling formula. The estimate along with the frequencies of feature values is then used to calculate predictive probabilities for test data. The two classifiers implemented are a Naive Bayes classifier that assumes test data is i.i.d. and a more computationally costly but more accurate simultaneous classifier that tries to find a labeling for the entire test dataset at once. Also included in this package are functions to simulate samples and gain sample probabilities from the Ewens sampling formula, also known as the Poisson-Dirichlet distribution. Finally, parameter estimation and a simple hypothesis test for the distribution are included. 
+Description: This package implements a supervised predictive classifier underpartition echangeability due to J.F.C. Kingman (1978). The two classifiers implemented are a Naive Bayes classifier that assumes test datais i.i.d., and a more computationally costly but more accurate simultaneous classifier that tries to find a labeling for the entire test dataset at once. Also included in this package are functions to simulate samples and gain sample probabilities from the Ewens sampling formula, also known as the Poisson-Dirichlet distribution. Finally, parameter estimation and a simple hypothesis test for the distribution are included. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -16,4 +16,4 @@ RoxygenNote: 7.1.1.9001
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Imports: stats
+Imports: stats, Rmpfr, gmp
