@@ -2,7 +2,7 @@
 % Please edit documentation in R/PD_distribution.R
 \name{rPD}
 \alias{rPD}
-\title{Sampling from he Dirichlet-Poisson Distribution}
+\title{Random sampling from the Poisson-Dirichlet Distribution}
 \usage{
 rPD(n, psi)
 }
@@ -16,7 +16,7 @@ rPD(n, psi)
 given parameter \eqn{\psi}.
 }
 \description{
-Sampling from he Dirichlet-Poisson Distribution
+rPD samples randomly from the PD distribution with a given \eqn{\psi} by simulating the Hoppe urn model.
 }
 \details{
 \code{rPD} samples random values with a given \eqn{\psi} from the Poisson-Dirichlet distribution by simulating the Hoppe urn model.

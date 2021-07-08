@@ -64,9 +64,9 @@ dlPD <- function(abund, psi="a") {
 
 
 
-#' Sampling from he Dirichlet-Poisson Distribution
+#' Random sampling from the Poisson-Dirichlet Distribution
 #'
-#'
+#' rPD samples randomly from the PD distribution with a given \eqn{\psi} by simulating the Hoppe urn model.
 
 #' @param n number of observations.
 #' @param psi dispersal parameter.
