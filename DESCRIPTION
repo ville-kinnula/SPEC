@@ -16,4 +16,7 @@ RoxygenNote: 7.1.1.9001
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Imports: stats (>=4.1.0), Rmpfr (>=4.0.2), gmp (>=6.2.0)
+Imports: 
+    gmp (>= 0.6.2),
+    stats (>= 4.1.0),
+    Rmpfr (>= 0.8.4)

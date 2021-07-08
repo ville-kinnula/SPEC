@@ -1,14 +1,10 @@
 #' The Poisson-Dirichlet distribution
 #'
-#' Distribution function and random generation of for the Poisson-Dirichlet distribution.
+#' Distribution function for the Poisson-Dirichlet distribution.
 #' @usage dPD(abund, psi)
-#' @usage rPD(n, psi)
 #' @param abund An abundance vector.
-#' @param psi Dispersal parameter. For `dPD` accepted values are positive numbers, "a" for absolute value psi=1 by default, or "r" for relative value psi equals sample size.
-#' @param n number of observations.
+#' @param psi Dispersal parameter. Accepted values are positive numbers, "a" for absolute value \eqn{\psi}=1 by default, or "r" for relative value psi equals sample size.
 #' @return `dPD` returns the probability of the abundance vector of the data vector `x`, given dispersal parameter \eqn{\psi}.
-#' @return `rPD` returns a vector with a sample of size \eqn{n} from the Hoppe urn model with parameter \eqn{\psi}, along with its table of frequencies.
-#' given parameter \eqn{\psi}.
 #' @keywords Poisson-Dirichlet distribution
 #' @export
 #' @details `dPD` calculates the probability of a data vector `x` given by the Poisson-Dirichlet distribution,
@@ -17,11 +13,8 @@
 #' species. In terms of the paintbox process, a high \eqn{\psi} increases the
 #' size of the continuous part \eqn{p_0} of the process, while a low \eqn{\psi} will increase
 #' the size of the discrete parts \eqn{p_>0}.
-#' `rPD` samples random values with a given \eqn{\psi} from the Poisson-Dirichlet distribution by simulating the Hoppe urn model.
 #' @references W.J. Ewens, The sampling theory of selectively neutral alleles, Theoretical Population Biology, Volume 3, Issue 1,
 #' 1972, Pages 87-112, ISSN 0040-5809, <https://doi.org/10.1016/0040-5809(72)90035-4>.
-#' @references Hoppe, F.M. The sampling theory of neutral alleles and an urn model in population genetics.
-#'  J. Math. Biology 25, 123–159 (1987). <https://doi.org/10.1007/BF00276386>.
 #' @examples
 #' ## Get a random sample from the Poisson Dirichlet distribution, and
 #' ## find the probability of such a sample with psi=5:
@@ -30,12 +23,7 @@
 #' a=table(table(s))
 #' dPD(a, psi=5)
 #'
-#' ## Get random sample from the PD distribution with different psi,
-#' ## and estimate the psi of the samples:
-#' s1<-rPD(1000, 10)
-#' s2<- rPD(1000, 50)
-#' print(c(MLEp(table(table(s1)))$psi, MLEp(table(table(s2)))$psi))
-#'
+
 
 
 dPD <- function(abund, psi="a") {
@@ -82,10 +70,23 @@ dlPD <- function(abund, psi="a") {
 
 #' @param n number of observations.
 #' @param psi dispersal parameter.
-
+#' @usage rPD(n, psi)
+#' @return `rPD` returns a vector with a sample of size \eqn{n} from the Hoppe urn model with parameter \eqn{\psi}, along with its table of frequencies.
+#' given parameter \eqn{\psi}.
 #' @keywords Poisson-Dirichlet distribution
 #' @export
-#' @rdname dPD
+#' @references Hoppe, F.M. The sampling theory of neutral alleles and an urn model in population genetics.
+#'  J. Math. Biology 25, 123–159 (1987). <https://doi.org/10.1007/BF00276386>.
+#' @references W.J. Ewens, The sampling theory of selectively neutral alleles, Theoretical Population Biology, Volume 3, Issue 1,
+#' 1972, Pages 87-112, ISSN 0040-5809, <https://doi.org/10.1016/0040-5809(72)90035-4>.
+#' @details `rPD` samples random values with a given \eqn{\psi} from the Poisson-Dirichlet distribution by simulating the Hoppe urn model.
+#' @examples
+#' ## Get random sample from the PD distribution with different psi,
+#' ## and estimate the psi of the samples:
+#' s1<-rPD(1000, 10)
+#' s2<- rPD(1000, 50)
+#' print(c(MLEp(table(table(s1)))$psi, MLEp(table(table(s2)))$psi))
+#'
 
 
 rPD <- function(n, psi) {
